@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="iam.dao.SPARK_SQLMapper" >
+  <resultMap id="BaseResultMap" type="iam.db.SPARK_SQL" >
+    <id column="APP_ID" property="APP_ID" jdbcType="DECIMAL" />
+    <id column="SQL_ID" property="SQL_ID" jdbcType="DECIMAL" />
+    <result column="DATA_NAME" property="DATA_NAME" jdbcType="VARCHAR" />
+    <result column="TYPE" property="TYPE" jdbcType="VARCHAR" />
+    <result column="TABLE_KEY" property="TABLE_KEY" jdbcType="VARCHAR" />
+    <result column="ROLE_ID" property="ROLE_ID" jdbcType="DECIMAL" />
+    <result column="MIN" property="MIN" jdbcType="DECIMAL" />
+    <result column="MAX" property="MAX" jdbcType="DECIMAL" />
+    <result column="NUM_PARTITION" property="NUM_PARTITION" jdbcType="DECIMAL" />
+    <result column="OUT_TYPE" property="OUT_TYPE" jdbcType="DECIMAL" />
+    <result column="OUT_DIR" property="OUT_DIR" jdbcType="VARCHAR" />
+    <result column="OUT_MODE" property="OUT_MODE" jdbcType="DECIMAL" />
+    <result column="ACTION1" property="ACTION1" jdbcType="DECIMAL" />
+    <result column="ACTION2" property="ACTION2" jdbcType="VARCHAR" />
+    <result column="ACTION3" property="ACTION3" jdbcType="VARCHAR" />
+    <result column="OPTIONS" property="OPTIONS" jdbcType="VARCHAR" />
+    <result column="MODULE_ID" property="MODULE_ID" jdbcType="DECIMAL" />
+    <result column="MODULE_NAME" property="MODULE_NAME" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="DESCRIPTION" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="iam.db.SPARK_SQL" extends="BaseResultMap" >
+    <result column="DATA" property="DATA" jdbcType="CLOB" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    APP_ID, SQL_ID, DATA_NAME, TYPE, TABLE_KEY, ROLE_ID, MIN, MAX, NUM_PARTITION, OUT_TYPE, 
+    OUT_DIR, OUT_MODE, ACTION1, ACTION2, ACTION3, OPTIONS, MODULE_ID, MODULE_NAME, DESCRIPTION
+  </sql>
+  <sql id="Blob_Column_List" >
+    DATA
+  </sql>
+
+  <select id ="selectByAppId" resultType="iam.db.SPARK_SQL" parameterType="java.lang.Long">
+    select * from SPARK_SQL where SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="iam.db.SPARK_SQLKey" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from SPARK_SQL
+    where APP_ID = #{APP_ID,jdbcType=DECIMAL}
+      and SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="iam.db.SPARK_SQLKey" >
+    delete from SPARK_SQL
+    where APP_ID = #{APP_ID,jdbcType=DECIMAL}
+      and SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="iam.db.SPARK_SQL" >
+    insert into SPARK_SQL (APP_ID, SQL_ID, DATA_NAME, 
+      TYPE, TABLE_KEY, ROLE_ID, 
+      MIN, MAX, NUM_PARTITION, 
+      OUT_TYPE, OUT_DIR, OUT_MODE, 
+      ACTION1, ACTION2, ACTION3, 
+      OPTIONS, MODULE_ID, MODULE_NAME, 
+      DESCRIPTION, DATA)
+    values (#{APP_ID,jdbcType=DECIMAL}, #{SQL_ID,jdbcType=DECIMAL}, #{DATA_NAME,jdbcType=VARCHAR}, 
+      #{TYPE,jdbcType=VARCHAR}, #{TABLE_KEY,jdbcType=VARCHAR}, #{ROLE_ID,jdbcType=DECIMAL}, 
+      #{MIN,jdbcType=DECIMAL}, #{MAX,jdbcType=DECIMAL}, #{NUM_PARTITION,jdbcType=DECIMAL}, 
+      #{OUT_TYPE,jdbcType=DECIMAL}, #{OUT_DIR,jdbcType=VARCHAR}, #{OUT_MODE,jdbcType=DECIMAL}, 
+      #{ACTION1,jdbcType=DECIMAL}, #{ACTION2,jdbcType=VARCHAR}, #{ACTION3,jdbcType=VARCHAR}, 
+      #{OPTIONS,jdbcType=VARCHAR}, #{MODULE_ID,jdbcType=DECIMAL}, #{MODULE_NAME,jdbcType=VARCHAR}, 
+      #{DESCRIPTION,jdbcType=VARCHAR}, #{DATA,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="iam.db.SPARK_SQL" >
+    insert into SPARK_SQL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="APP_ID != null" >
+        APP_ID,
+      </if>
+      <if test="SQL_ID != null" >
+        SQL_ID,
+      </if>
+      <if test="DATA_NAME != null" >
+        DATA_NAME,
+      </if>
+      <if test="TYPE != null" >
+        TYPE,
+      </if>
+      <if test="TABLE_KEY != null" >
+        TABLE_KEY,
+      </if>
+      <if test="ROLE_ID != null" >
+        ROLE_ID,
+      </if>
+      <if test="MIN != null" >
+        MIN,
+      </if>
+      <if test="MAX != null" >
+        MAX,
+      </if>
+      <if test="NUM_PARTITION != null" >
+        NUM_PARTITION,
+      </if>
+      <if test="OUT_TYPE != null" >
+        OUT_TYPE,
+      </if>
+      <if test="OUT_DIR != null" >
+        OUT_DIR,
+      </if>
+      <if test="OUT_MODE != null" >
+        OUT_MODE,
+      </if>
+      <if test="ACTION1 != null" >
+        ACTION1,
+      </if>
+      <if test="ACTION2 != null" >
+        ACTION2,
+      </if>
+      <if test="ACTION3 != null" >
+        ACTION3,
+      </if>
+      <if test="OPTIONS != null" >
+        OPTIONS,
+      </if>
+      <if test="MODULE_ID != null" >
+        MODULE_ID,
+      </if>
+      <if test="MODULE_NAME != null" >
+        MODULE_NAME,
+      </if>
+      <if test="DESCRIPTION != null" >
+        DESCRIPTION,
+      </if>
+      <if test="DATA != null" >
+        DATA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="APP_ID != null" >
+        #{APP_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="SQL_ID != null" >
+        #{SQL_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="DATA_NAME != null" >
+        #{DATA_NAME,jdbcType=VARCHAR},
+      </if>
+      <if test="TYPE != null" >
+        #{TYPE,jdbcType=VARCHAR},
+      </if>
+      <if test="TABLE_KEY != null" >
+        #{TABLE_KEY,jdbcType=VARCHAR},
+      </if>
+      <if test="ROLE_ID != null" >
+        #{ROLE_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="MIN != null" >
+        #{MIN,jdbcType=DECIMAL},
+      </if>
+      <if test="MAX != null" >
+        #{MAX,jdbcType=DECIMAL},
+      </if>
+      <if test="NUM_PARTITION != null" >
+        #{NUM_PARTITION,jdbcType=DECIMAL},
+      </if>
+      <if test="OUT_TYPE != null" >
+        #{OUT_TYPE,jdbcType=DECIMAL},
+      </if>
+      <if test="OUT_DIR != null" >
+        #{OUT_DIR,jdbcType=VARCHAR},
+      </if>
+      <if test="OUT_MODE != null" >
+        #{OUT_MODE,jdbcType=DECIMAL},
+      </if>
+      <if test="ACTION1 != null" >
+        #{ACTION1,jdbcType=DECIMAL},
+      </if>
+      <if test="ACTION2 != null" >
+        #{ACTION2,jdbcType=VARCHAR},
+      </if>
+      <if test="ACTION3 != null" >
+        #{ACTION3,jdbcType=VARCHAR},
+      </if>
+      <if test="OPTIONS != null" >
+        #{OPTIONS,jdbcType=VARCHAR},
+      </if>
+      <if test="MODULE_ID != null" >
+        #{MODULE_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="MODULE_NAME != null" >
+        #{MODULE_NAME,jdbcType=VARCHAR},
+      </if>
+      <if test="DESCRIPTION != null" >
+        #{DESCRIPTION,jdbcType=VARCHAR},
+      </if>
+      <if test="DATA != null" >
+        #{DATA,jdbcType=CLOB},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="iam.db.SPARK_SQL" >
+    update SPARK_SQL
+    <set >
+      <if test="DATA_NAME != null" >
+        DATA_NAME = #{DATA_NAME,jdbcType=VARCHAR},
+      </if>
+      <if test="TYPE != null" >
+        TYPE = #{TYPE,jdbcType=VARCHAR},
+      </if>
+      <if test="TABLE_KEY != null" >
+        TABLE_KEY = #{TABLE_KEY,jdbcType=VARCHAR},
+      </if>
+      <if test="ROLE_ID != null" >
+        ROLE_ID = #{ROLE_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="MIN != null" >
+        MIN = #{MIN,jdbcType=DECIMAL},
+      </if>
+      <if test="MAX != null" >
+        MAX = #{MAX,jdbcType=DECIMAL},
+      </if>
+      <if test="NUM_PARTITION != null" >
+        NUM_PARTITION = #{NUM_PARTITION,jdbcType=DECIMAL},
+      </if>
+      <if test="OUT_TYPE != null" >
+        OUT_TYPE = #{OUT_TYPE,jdbcType=DECIMAL},
+      </if>
+      <if test="OUT_DIR != null" >
+        OUT_DIR = #{OUT_DIR,jdbcType=VARCHAR},
+      </if>
+      <if test="OUT_MODE != null" >
+        OUT_MODE = #{OUT_MODE,jdbcType=DECIMAL},
+      </if>
+      <if test="ACTION1 != null" >
+        ACTION1 = #{ACTION1,jdbcType=DECIMAL},
+      </if>
+      <if test="ACTION2 != null" >
+        ACTION2 = #{ACTION2,jdbcType=VARCHAR},
+      </if>
+      <if test="ACTION3 != null" >
+        ACTION3 = #{ACTION3,jdbcType=VARCHAR},
+      </if>
+      <if test="OPTIONS != null" >
+        OPTIONS = #{OPTIONS,jdbcType=VARCHAR},
+      </if>
+      <if test="MODULE_ID != null" >
+        MODULE_ID = #{MODULE_ID,jdbcType=DECIMAL},
+      </if>
+      <if test="MODULE_NAME != null" >
+        MODULE_NAME = #{MODULE_NAME,jdbcType=VARCHAR},
+      </if>
+      <if test="DESCRIPTION != null" >
+        DESCRIPTION = #{DESCRIPTION,jdbcType=VARCHAR},
+      </if>
+      <if test="DATA != null" >
+        DATA = #{DATA,jdbcType=CLOB},
+      </if>
+    </set>
+    where APP_ID = #{APP_ID,jdbcType=DECIMAL}
+      and SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="iam.db.SPARK_SQL" >
+    update SPARK_SQL
+    set DATA_NAME = #{DATA_NAME,jdbcType=VARCHAR},
+      TYPE = #{TYPE,jdbcType=VARCHAR},
+      TABLE_KEY = #{TABLE_KEY,jdbcType=VARCHAR},
+      ROLE_ID = #{ROLE_ID,jdbcType=DECIMAL},
+      MIN = #{MIN,jdbcType=DECIMAL},
+      MAX = #{MAX,jdbcType=DECIMAL},
+      NUM_PARTITION = #{NUM_PARTITION,jdbcType=DECIMAL},
+      OUT_TYPE = #{OUT_TYPE,jdbcType=DECIMAL},
+      OUT_DIR = #{OUT_DIR,jdbcType=VARCHAR},
+      OUT_MODE = #{OUT_MODE,jdbcType=DECIMAL},
+      ACTION1 = #{ACTION1,jdbcType=DECIMAL},
+      ACTION2 = #{ACTION2,jdbcType=VARCHAR},
+      ACTION3 = #{ACTION3,jdbcType=VARCHAR},
+      OPTIONS = #{OPTIONS,jdbcType=VARCHAR},
+      MODULE_ID = #{MODULE_ID,jdbcType=DECIMAL},
+      MODULE_NAME = #{MODULE_NAME,jdbcType=VARCHAR},
+      DESCRIPTION = #{DESCRIPTION,jdbcType=VARCHAR},
+      DATA = #{DATA,jdbcType=CLOB}
+    where APP_ID = #{APP_ID,jdbcType=DECIMAL}
+      and SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="iam.db.SPARK_SQL" >
+    update SPARK_SQL
+    set DATA_NAME = #{DATA_NAME,jdbcType=VARCHAR},
+      TYPE = #{TYPE,jdbcType=VARCHAR},
+      TABLE_KEY = #{TABLE_KEY,jdbcType=VARCHAR},
+      ROLE_ID = #{ROLE_ID,jdbcType=DECIMAL},
+      MIN = #{MIN,jdbcType=DECIMAL},
+      MAX = #{MAX,jdbcType=DECIMAL},
+      NUM_PARTITION = #{NUM_PARTITION,jdbcType=DECIMAL},
+      OUT_TYPE = #{OUT_TYPE,jdbcType=DECIMAL},
+      OUT_DIR = #{OUT_DIR,jdbcType=VARCHAR},
+      OUT_MODE = #{OUT_MODE,jdbcType=DECIMAL},
+      ACTION1 = #{ACTION1,jdbcType=DECIMAL},
+      ACTION2 = #{ACTION2,jdbcType=VARCHAR},
+      ACTION3 = #{ACTION3,jdbcType=VARCHAR},
+      OPTIONS = #{OPTIONS,jdbcType=VARCHAR},
+      MODULE_ID = #{MODULE_ID,jdbcType=DECIMAL},
+      MODULE_NAME = #{MODULE_NAME,jdbcType=VARCHAR},
+      DESCRIPTION = #{DESCRIPTION,jdbcType=VARCHAR}
+    where APP_ID = #{APP_ID,jdbcType=DECIMAL}
+      and SQL_ID = #{SQL_ID,jdbcType=DECIMAL}
+  </update>
+</mapper>
